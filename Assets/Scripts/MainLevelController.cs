@@ -104,6 +104,9 @@ public class MainLevelController : MonoBehaviour
 
     public void IncorrectOption()
     {
+        Option1.SetActive(false);
+        Option2.SetActive(false);
+
         EndGame();
     }
 
