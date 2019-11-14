@@ -112,6 +112,15 @@ public class MainLevelController : MonoBehaviour
 
     private void EndGame()
     {
+        int prevHighScore = PlayerPrefs.GetInt("high-score-clicks");
+
+        if (score > prevHighScore)
+        {
+            PlayerPrefs.SetInt("high-score-clicks", score);
+            //display some high score thingy
+            PlayerPrefs.Save();
+        }
+
         deathCanvas.SetActive(true);
     }
 }
