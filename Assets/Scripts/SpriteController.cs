@@ -2,20 +2,20 @@
 
 public class SpriteController : MonoBehaviour
 {
-    public MainLevelController mlc;
+    public GameLogic gameLogic;
     public bool amICorrectOption = false;
 
     private void OnMouseDown()
     {
-        Debug.Log("i am pressed");
+        //Debug.Log("i am pressed");
 
         if (amICorrectOption)
         {
-            mlc.CorrectOption();
+            gameLogic.CorrectOption();
         }
         else
         {
-            mlc.IncorrectOption();
+            gameLogic.IncorrectOption();
         }
     }
 }

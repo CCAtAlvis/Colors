@@ -1,34 +1,49 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour
+public class GameLogic : MonoBehaviour
 {
     public RawImage flashImage;
-
     public Text scoreText;
-
-    public GameObject deathCanvas;
+    public GameController gameController;
 
     public GameObject[] options;
 
     private List<SpriteRenderer> sprites = new List<SpriteRenderer>();
     private List<SpriteController> spriteControllers = new List<SpriteController>();
 
-    private Vector3[] optionsPosition2 = { new Vector3(), new Vector3() };
-    private Vector3[] optionsPosition3 = { new Vector3(), new Vector3(), new Vector3() };
-    private Vector3[] optionsPosition4 = { new Vector3(), new Vector3(),
-                                           new Vector3(), new Vector3() };
-    private Vector3[] optionsPosition5 = { new Vector3(), new Vector3(), new Vector3(),
-                                           new Vector3(), new Vector3() };
-    private Vector3[] optionsPosition6 = { new Vector3(), new Vector3(), new Vector3(),
-                                           new Vector3(), new Vector3(), new Vector3() };
+    private List<Vector2> spritePositions = new List<Vector2>();
+
+    private Vector2[] optionsPosition2 = { new Vector2(-1, 0), new Vector2(1, 0) };
+
+    private Vector2[] optionsPosition3 = {  new Vector2(-1,0.865f),
+                                            new Vector2(1,0.865f),
+                                            new Vector2(0, -1) };
+
+    private Vector2[] optionsPosition4 = { new Vector2(-1,1), new Vector2(1,1),
+                                           new Vector2(-1,-1), new Vector2(1,-1) };
+
+    private Vector2[] optionsPosition5 = {  new Vector2(0,2),
+                                            new Vector2(-1.75f,0), new Vector2(-1,-2),
+                                            new Vector2(1,-2), new Vector2(1.75f,0) };
+
+    private Vector2[] optionsPosition6 = {  new Vector2(-1,1.8f), new Vector2(1,1.8f),
+                                            new Vector2(-1.75f,0), new Vector2(1.75f, 0),
+                                            new Vector2(-1,-1.8f), new Vector2(1,-1.8f) };
 
     [SerializeField]
     private float flashSpeedMultipler = 1f;
 
     [SerializeField]
-    private Color32[] colorsToFlash;
+    private Color32[] colorsToFlash = { new Color32(255,0,0,255),
+                                        new Color32(0,255,0,255),
+                                        new Color32(0,0,255,255),
+                                        new Color32(0,255,255,255),
+                                        new Color32(255,0,255,255),
+                                        new Color32(255,255,0,255),
+                                        new Color32(255,255,255,255) };
 
     private bool toFlashColor = false;
     private int flashColorIndex;
@@ -44,6 +59,9 @@ public class GameController : MonoBehaviour
             sprites.Add(options[i].GetComponent<SpriteRenderer>());
             spriteControllers.Add(options[i].GetComponent<SpriteController>());
         }
+
+        spritePositions.Add(optionsPosition2[0]);
+        spritePositions.Add(optionsPosition2[1]);
 
         FlashScreen();
     }
@@ -80,18 +98,18 @@ public class GameController : MonoBehaviour
 
     int[] GetRandomColorIndex()
     {
-        int[] indexes = { 0, 1, 2, 3, 4, 5, 6 };
+        int[] indexes = new int[] { 0, 1, 2, 3, 4, 5, 6 };
 
         return ShuffleArray(indexes);
     }
 
     int[] GetRandomTransform()
     {
-        int[] transforms2 = { 0, 1 };
-        int[] transforms3 = { 0, 1, 2 };
-        int[] transforms4 = { 0, 1, 2, 3 };
-        int[] transforms5 = { 0, 1, 2, 3, 4 };
-        int[] transforms6 = { 0, 1, 2, 3, 4, 5 };
+        int[] transforms2 = new int[] { 0, 1 };
+        int[] transforms3 = new int[] { 0, 1, 2 };
+        int[] transforms4 = new int[] { 0, 1, 2, 3 };
+        int[] transforms5 = new int[] { 0, 1, 2, 3, 4 };
+        int[] transforms6 = new int[] { 0, 1, 2, 3, 4, 5 };
 
         switch (optionsToDisplay)
         {
@@ -126,6 +144,10 @@ public class GameController : MonoBehaviour
         toFlashColor = true;
         flashImage.color = colorsToFlash[flashColorIndex];
 
+        //Debug.Log(colorIndexes[0]);
+        //Debug.Log(colorsToFlash[flashColorIndex]);
+        //Debug.Log(flashImage.color);
+
         //Debug.Log("flashing color: " + colorsToFlash[flashColorIndex]);
 
         SetOptions(colorIndexes);
@@ -135,68 +157,81 @@ public class GameController : MonoBehaviour
     {
         int[] positionIndexes = GetRandomTransform();
 
-        Vector3[] positions;
-        switch (optionsToDisplay)
-        {
-            case 2:
-                positions = optionsPosition2;
-                break;
-
-            case 3:
-                positions = optionsPosition3;
-                break;
-
-            case 4:
-                positions = optionsPosition4;
-                break;
-
-            case 5:
-                positions = optionsPosition5;
-                break;
-
-            case 6:
-                positions = optionsPosition6;
-                break;
-        }
-
-
         for (int i = 0; i < optionsToDisplay; ++i)
         {
-            options[i].transform.position = positions[positionIndexes[i]];
+            //Debug.Log(i +":"+ positionIndexes[i] +":"+optionsToDisplay +":"+ spritePositions[positionIndexes[i]]);
+            options[i].transform.position = spritePositions[positionIndexes[i]];
             sprites[i].color = colorsToFlash[indexes[i]];
-            spriteControllers[i].amICorrectOption = false;
+            spriteControllers[i].amICorrectOption = true;
 
             if (i == 0)
             {
                 spriteControllers[i].amICorrectOption = true;
             }
         }
+    }
 
-        if (Random.Range(0, 2) == 0)
-        {
-            //sprite1.color = colorsToFlash[flashColorIndex];
-            //sprite2.color = colorsToFlash[otherOptionIndex];
+    private void ScoreHandler(int scoreIncrement = 1)
+    {
+        score += scoreIncrement;
 
-            //spriteController1.amICorrectOption = true;
-            //spriteController2.amICorrectOption = false;
-        }
-        else
+        if (score == 10)
         {
+            for (int i = 0; i < spritePositions.Count; ++i)
+            {
+                spritePositions[i] = optionsPosition3[i];
+            }
+            spritePositions.Add(optionsPosition3[2]);
+
+            optionsToDisplay++;
         }
+        else if (score == 30)
+        {
+            for (int i = 0; i < spritePositions.Count; i++)
+            {
+                spritePositions[i] = optionsPosition4[i];
+            }
+            spritePositions.Add(optionsPosition4[3]);
+
+            optionsToDisplay++;
+        }
+        else if (score == 60)
+        {
+            for (int i = 0; i < spritePositions.Count; i++)
+            {
+                spritePositions[i] = optionsPosition5[i];
+            }
+            spritePositions.Add(optionsPosition5[4]);
+
+            optionsToDisplay++;
+        }
+        else if (score == 100)
+        {
+            for (int i = 0; i < spritePositions.Count; i++)
+            {
+                spritePositions[i] = optionsPosition6[i];
+            }
+            spritePositions.Add(optionsPosition6[5]);
+
+            optionsToDisplay++;
+        }
+
+        if (score%10==0 && flashSpeedMultipler < 15f)
+        {
+            flashSpeedMultipler += 0.1f;
+        }
+
+        scoreText.text = "" + score;
     }
 
     public void CorrectOption()
     {
-        score++;
-        scoreText.text = "" + score;
+        ScoreHandler();
         FlashScreen();
     }
 
     public void IncorrectOption()
     {
-        Option1.SetActive(false);
-        Option2.SetActive(false);
-
-        //EndGame();
+        gameController.EndGame(score);
     }
 }
