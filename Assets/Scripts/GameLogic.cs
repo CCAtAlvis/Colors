@@ -162,7 +162,7 @@ public class GameLogic : MonoBehaviour
             //Debug.Log(i +":"+ positionIndexes[i] +":"+optionsToDisplay +":"+ spritePositions[positionIndexes[i]]);
             options[i].transform.position = spritePositions[positionIndexes[i]];
             sprites[i].color = colorsToFlash[indexes[i]];
-            spriteControllers[i].amICorrectOption = true;
+            spriteControllers[i].amICorrectOption = false;
 
             if (i == 0)
             {
