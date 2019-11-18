@@ -26,8 +26,9 @@ public class MenuController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey("escape"))
+        if (Input.GetKey(KeyCode.Escape))
         {
+            Debug.Log("exiting game");
             Application.Quit();
         }
     }

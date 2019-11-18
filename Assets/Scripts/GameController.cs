@@ -8,7 +8,9 @@ public class GameController : MonoBehaviour
     public Text countdown;
     public GameLogic gameLogic;
     public GameObject optionSprites;
+
     public GameObject deathCanvas;
+    public GameObject pauseCanvas;
 
     [SerializeField]
     private int timeLeft = 3;
@@ -17,6 +19,8 @@ public class GameController : MonoBehaviour
     {
         gameLogic.enabled = false;
         optionSprites.SetActive(false);
+        deathCanvas.SetActive(false);
+        pauseCanvas.SetActive(false);
     }
 
     void Start()
@@ -24,6 +28,14 @@ public class GameController : MonoBehaviour
         //Debug.Log("starting");
         countdown.text = "" + timeLeft;
         StartCoroutine("CountdownTimer");
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && timeLeft <= 0)
+        {
+            pauseCanvas.SetActive(!pauseCanvas.activeSelf);
+        }        
     }
 
     IEnumerator CountdownTimer()
@@ -71,5 +83,15 @@ public class GameController : MonoBehaviour
     public void RestartGame()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void ResumeGame()
+    {
+        pauseCanvas.SetActive(false);
+    }
+
+    public void QuitGame()
+    {
+        SceneManager.LoadScene(0);
     }
 }
