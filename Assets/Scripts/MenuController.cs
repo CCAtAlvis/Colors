@@ -17,14 +17,23 @@ public class MenuController : MonoBehaviour
         if (highScore != 0)
         {
             highScoreText.text = "HIGH SCORE\n" + highScore;
-        } else
+        }
+        else
         {
             highScoreText.text = "";
         }
     }
 
-    public void StartGame () {
-        SceneManager.LoadScene(1);
-	}
+    void Update()
+    {
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
+    }
 
+    public void StartGame()
+    {
+        SceneManager.LoadScene(1);
+    }
 }
