@@ -1471,7 +1471,7 @@ MonoBehaviour:
   - {fileID: 52530837}
   - {fileID: 982708116}
   - {fileID: 283588661}
-  flashSpeedMultipler: 5
+  flashSpeedMultipler: 1
   colorsToFlash:
   - serializedVersion: 2
     rgba: 4278190335
