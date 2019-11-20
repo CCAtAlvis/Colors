@@ -12,8 +12,8 @@ public class GameController : MonoBehaviour
 {
 #if UNITY_ANDROID
     string appId = "ca-app-pub-4474806217912407~9143176867";
-    string rewardedAdUnitId = "ca-app-pub-3940256099942544/5224354917";
-    string bannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";
+    string rewardedAdUnitId = "ca-app-pub-4474806217912407/7095582115";
+    string bannerAdUnitId = "ca-app-pub-4474806217912407/7606733914";
 #else
     string appId = "unexpected_platform";
     string rewardedAdUnitId = "unexpected_platform";
