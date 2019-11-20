@@ -239,4 +239,9 @@ public class GameLogic : MonoBehaviour
     {
         return score;
     }
+
+    public void AddLife()
+    {
+        FlashScreen();
+    }
 }
