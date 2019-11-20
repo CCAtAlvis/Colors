@@ -15,6 +15,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private int timeLeft = 3;
 
+    private bool hasGameEnded = false;
+
     void Awake()
     {
         gameLogic.enabled = false;
@@ -34,8 +36,15 @@ public class GameController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && timeLeft <= 0)
         {
-            pauseCanvas.SetActive(!pauseCanvas.activeSelf);
-        }        
+            if (hasGameEnded)
+            {
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                pauseCanvas.SetActive(!pauseCanvas.activeSelf);
+            }
+        }
     }
 
     IEnumerator CountdownTimer()
@@ -78,6 +87,7 @@ public class GameController : MonoBehaviour
         }
 
         deathCanvas.SetActive(true);
+        hasGameEnded = true;
     }
 
     public void RestartGame()
