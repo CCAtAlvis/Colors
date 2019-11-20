@@ -234,4 +234,9 @@ public class GameLogic : MonoBehaviour
     {
         gameController.EndGame(score);
     }
+
+    public int GetScore()
+    {
+        return score;
+    }
 }

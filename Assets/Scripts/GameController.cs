@@ -73,10 +73,9 @@ public class GameController : MonoBehaviour
         optionSprites.SetActive(true);
     }
 
-    public void EndGame(int currentScore)
+    private void CheckAndSetHighscore()
     {
-        optionSprites.SetActive(false);
-
+        int currentScore = gameLogic.GetScore();
         int prevHighScore = PlayerPrefs.GetInt("high-score-clicks");
 
         if (currentScore > prevHighScore)
@@ -85,6 +84,13 @@ public class GameController : MonoBehaviour
             //display some high score thingy
             PlayerPrefs.Save();
         }
+    }
+
+    public void EndGame(int currentScore)
+    {
+        optionSprites.SetActive(false);
+
+        CheckAndSetHighscore();
 
         deathCanvas.SetActive(true);
         hasGameEnded = true;
@@ -102,6 +108,7 @@ public class GameController : MonoBehaviour
 
     public void QuitGame()
     {
+        CheckAndSetHighscore();
         SceneManager.LoadScene(0);
     }
 }
