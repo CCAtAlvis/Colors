@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using GoogleMobileAds.Api;
 
 public class GameController : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class GameController : MonoBehaviour
 
     private bool hasGameEnded = false;
 
+    //BannerView to hold ads
+    private BannerView bannerView;
+
     void Awake()
     {
         gameLogic.enabled = false;
@@ -30,7 +34,38 @@ public class GameController : MonoBehaviour
         //Debug.Log("starting");
         countdown.text = "" + timeLeft;
         StartCoroutine("CountdownTimer");
+
+#if UNITY_ANDROID
+        string appId = "ca-app-pub-4474806217912407~9143176867";
+#else
+            string appId = "unexpected_platform";
+#endif
+
+        // Initialize the Google Mobile Ads SDK.
+        MobileAds.Initialize(appId);
+
+        this.RequestBanner();
+
     }
+
+    private void RequestBanner()
+    {
+#if UNITY_ANDROID
+        string adUnitId = "ca-app-pub-3940256099942544/6300978111";
+#else
+            string adUnitId = "unexpected_platform";
+#endif
+
+        // Create a 320x50 banner at the top of the screen.
+        this.bannerView = new BannerView(adUnitId, AdSize.Banner, AdPosition.Bottom);
+
+        // Create an empty ad request.
+        AdRequest request = new AdRequest.Builder().Build();
+
+        // Load the banner with the request.
+        this.bannerView.LoadAd(request);
+    }
+
 
     void Update()
     {
