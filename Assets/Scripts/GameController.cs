@@ -1,12 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
 using GoogleMobileAds.Api;
-using System;
 
 public class GameController : MonoBehaviour
 {
+#if UNITY_ANDROID
+    string appId = "ca-app-pub-4474806217912407~9143176867";
+    string rewardedAdUnitId = "ca-app-pub-3940256099942544/5224354917";
+    string bannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";
+#else
+    string appId = "unexpected_platform";
+    string rewardedAdUnitId = "unexpected_platform";
+    string bannerAdUnitId = "unexpected_platform";
+#endif
+
     public Text countdown;
     public GameLogic gameLogic;
     public GameObject optionSprites;
@@ -24,7 +37,8 @@ public class GameController : MonoBehaviour
 
     //RewardedAd
     private RewardedAd rewardedAd;
-
+    private bool rewardReceived = false;
+    private bool rewardAdClosed = false;
 
     void Awake()
     {
@@ -38,28 +52,22 @@ public class GameController : MonoBehaviour
     {
         //Debug.Log("starting");
         countdown.text = "" + timeLeft;
-        StartCoroutine("CountdownTimer");
-
-#if UNITY_ANDROID
-        string appId = "ca-app-pub-4474806217912407~9143176867";
-#else
-            string appId = "unexpected_platform";
-#endif
+        StartCoroutine(CountdownTimer());
 
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);
-        this.RequestBanner();
+        this.RequestBannerAd();
 
 
         //THIS STUFF FOR REWARDED ADS
-#if UNITY_ANDROID
-        string rewardedAdUnitId = "ca-app-pub-3940256099942544/6300978111";
-#else
-            string rewardedAdUnitId = "unexpected_platform";
-#endif
-
         this.rewardedAd = new RewardedAd(rewardedAdUnitId);
 
+        // Called when an ad request has successfully loaded.
+        this.rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
+        // Called when an ad request failed to load.
+        this.rewardedAd.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
+        // Called when an ad is shown.
+        this.rewardedAd.OnAdOpening += HandleRewardedAdOpening;
         // Called when the user should be rewarded for interacting with the ad.
         this.rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
         // Called when the ad is closed.
@@ -73,38 +81,73 @@ public class GameController : MonoBehaviour
 
 
     //THIS STUFF FOR REWARDED AD
-    public void UserChoseToWatchAd()
+    public void HandleRewardedAdLoaded(object sender, EventArgs args)
     {
-        if (this.rewardedAd.IsLoaded())
-        {
-            this.rewardedAd.Show();
-        }
+        Debug.Log("HandleRewardedAdLoaded event received");
     }
 
+    public void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
+    {
+        Debug.Log(
+            "HandleRewardedAdFailedToLoad event received with message: "
+                             + args.Message);
+    }
+
+    public void HandleRewardedAdOpening(object sender, EventArgs args)
+    {
+        Debug.Log("HandleRewardedAdOpening event received");
+    }
+
+    public void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
+    {
+        Debug.Log(
+            "HandleRewardedAdFailedToShow event received with message: "
+                             + args.Message);
+    }
+
+
+    //ALL THIS HACKY STUFF BELONGS TO/FROM
+    //https://stackoverflow.com/questions/53916533/setactive-can-only-be-called-from-the-main-thread
+    //Of the answers on this post, the with UnityMainThread isn't working
+    //Sooo... next lets try out this
+    //https://forum.unity.com/threads/unity-run-on-main-thread.423147/
+    //And even this is not working... now lets try the other answer from SO
+    //And even that doesn't seem to be working :cry:
+    //Time to try a new blog
+    //https://www.pmichaels.net/tag/findgameobjectwithtag-can-only-be-called-from-the-main-thread/
+    //And nope.. thats also not working :(
+    //Now from a video tutorial...
+    //This guy creates a singleton patter for his UIManager, which in later videos
+    //also handles the Google AdMobs stuff.
+    //https://www.youtube.com/watch?v=IUA_vMDRTxg - Implementing singleton
+    //https://www.youtube.com/watch?v=3gbOEH7FNn0 - Google AdMob Rewarded ads
+    //and even this is not working
+    //Sooo finally the method that worked!
+    //its simple, check for the flags in the Update loop
     public void HandleRewardedAdClosed(object sender, EventArgs args)
     {
         this.CreateAndLoadRewardedAd();
-    }
 
+        Debug.Log("HandleRewardedAdClosed");
+        if (rewardReceived)
+        {
+            rewardAdClosed = true;
+        }
+    }
 
     public void HandleUserEarnedReward(object sender, Reward args)
     {
         string type = args.Type;
         double amount = args.Amount;
-        print("HandleRewardedAdRewarded event received for "
+        Debug.Log("HandleRewardedAdRewarded event received for "
                         + amount.ToString() + " " + type);
 
-        gameLogic.AddLife();
+        this.bannerView.Hide();
+        rewardReceived = true;
     }
 
     private void CreateAndLoadRewardedAd()
     {
-#if UNITY_ANDROID
-        string rewardedAdUnitId = "ca-app-pub-3940256099942544/5224354917";
-#else
-            string adUnitId = "unexpected_platform";
-#endif
-
         this.rewardedAd = new RewardedAd(rewardedAdUnitId);
         this.rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
         this.rewardedAd.OnAdClosed += HandleRewardedAdClosed;
@@ -117,14 +160,8 @@ public class GameController : MonoBehaviour
 
 
     //THIS STUFF FOR BANNER ADS
-    private void RequestBanner()
+    private void RequestBannerAd()
     {
-#if UNITY_ANDROID
-        string bannerAdUnitId = "ca-app-pub-3940256099942544/6300978111";
-#else
-            string bannerAdUnitId = "unexpected_platform";
-#endif
-
         // Create a 320x50 banner at the top of the screen.
         this.bannerView = new BannerView(bannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
         // Create an empty ad request.
@@ -148,6 +185,19 @@ public class GameController : MonoBehaviour
             {
                 pauseCanvas.SetActive(!pauseCanvas.activeSelf);
             }
+        }
+
+        if (rewardReceived && rewardAdClosed)
+        {
+            deathCanvas.SetActive(false);
+            hasGameEnded = false;
+            countdown.gameObject.SetActive(true);
+
+            timeLeft = 3;
+            StartCoroutine(RestartGameAfterRewardedAd());
+
+            rewardReceived = false;
+            rewardAdClosed = false;
         }
     }
 
@@ -174,6 +224,32 @@ public class GameController : MonoBehaviour
         //Debug.Log("end");
 
         gameLogic.enabled = true;
+        optionSprites.SetActive(true);
+    }
+
+    IEnumerator RestartGameAfterRewardedAd()
+    {
+        while (timeLeft >= 0)
+        {
+            //Debug.Log(timeLeft);
+            countdown.text = "" + timeLeft;
+            if (timeLeft == 0)
+            {
+                countdown.text = "GO!";
+                yield return new WaitForSeconds(0.5f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(1);
+            }
+
+            timeLeft--;
+        }
+
+        countdown.gameObject.SetActive(false);
+        //Debug.Log("end");
+
+        gameLogic.AddLife();
         optionSprites.SetActive(true);
     }
 
@@ -204,6 +280,7 @@ public class GameController : MonoBehaviour
 
     public void RestartGame()
     {
+        this.bannerView.Hide();
         this.bannerView.Destroy();
         SceneManager.LoadScene(1);
     }
@@ -215,8 +292,23 @@ public class GameController : MonoBehaviour
 
     public void QuitGame()
     {
+        this.bannerView.Hide();
         this.bannerView.Destroy();
         CheckAndSetHighscore();
         SceneManager.LoadScene(0);
+    }
+
+    public void UserChoseToWatchAd()
+    {
+        rewardReceived = false;
+
+        Debug.Log("user wants to watch ad!!");
+        Debug.Log("is rewarded ad loaded: " + this.rewardedAd.IsLoaded());
+
+        this.bannerView.Hide();
+        if (this.rewardedAd.IsLoaded())
+        {
+            this.rewardedAd.Show();
+        }
     }
 }

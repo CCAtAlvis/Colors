@@ -2015,7 +2015,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 901062574}
-        m_MethodName: CreateAndLoadRewardedAd
+        m_MethodName: UserChoseToWatchAd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
