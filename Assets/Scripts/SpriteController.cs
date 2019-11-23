@@ -7,6 +7,7 @@ public class SpriteController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        AudioManager.Instance.PlayClickSound();
         //Debug.Log("i am pressed");
 
         if (amICorrectOption)

@@ -122,7 +122,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.1.10
+  bundleVersion: 0.1.14
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -249,8 +249,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: 
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: D:/Unity Projects/Colors/Builds/colors.keystore
+  AndroidKeyaliasName: alvis
   AndroidBuildApkPerCpuArchitecture: 0
   AndroidTVCompatibility: 1
   AndroidIsGame: 1
@@ -691,10 +691,10 @@ PlayerSettings:
   facebookXfbml: 0
   facebookFrictionlessRequests: 1
   apiCompatibilityLevel: 6
-  cloudProjectId: 
+  cloudProjectId: c5a5e327-f2a4-418a-baed-5fdd2a342ff6
   framebufferDepthMemorylessMode: 0
-  projectName: 
-  organizationId: 
+  projectName: Colors
+  organizationId: alvisgaming
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

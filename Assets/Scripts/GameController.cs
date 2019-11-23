@@ -8,16 +8,18 @@ using UnityEngine.SceneManagement;
 
 using GoogleMobileAds.Api;
 
+using UnityEngine.Networking;
+
 public class GameController : MonoBehaviour
 {
 #if UNITY_ANDROID
-    string appId = "ca-app-pub-4474806217912407~9143176867";
-    string rewardedAdUnitId = "ca-app-pub-4474806217912407/7095582115";
-    string bannerAdUnitId = "ca-app-pub-4474806217912407/7606733914";
+    string appId = "ca-app-pub-3737555426073384~3657301496";
+    string bannerAdUnitId = "ca-app-pub-3737555426073384/4778811477";
+    string rewardedAdUnitId = "ca-app-pub-3737555426073384/4587239787";
 #else
     string appId = "unexpected_platform";
-    string rewardedAdUnitId = "unexpected_platform";
     string bannerAdUnitId = "unexpected_platform";
+    string rewardedAdUnitId = "unexpected_platform";
 #endif
 
     public Text countdown;
@@ -26,6 +28,7 @@ public class GameController : MonoBehaviour
 
     public GameObject deathCanvas;
     public GameObject pauseCanvas;
+    public GameObject noAdAvailable;
 
     [SerializeField]
     private int timeLeft = 3;
@@ -56,6 +59,8 @@ public class GameController : MonoBehaviour
 
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);
+
+        //THIS STUFF FOR BANNE ADs
         this.RequestBannerAd();
 
 
@@ -77,8 +82,29 @@ public class GameController : MonoBehaviour
         AdRequest requestRewardedAd = new AdRequest.Builder().Build();
         // Load the rewarded ad with the request.
         this.rewardedAd.LoadAd(requestRewardedAd);
+
+
+        //Check if internet is working
+        StartCoroutine(CheckInternetConnection());
     }
 
+
+    //CHECKING IF INTERNET IS WORKING
+    IEnumerator CheckInternetConnection()
+    {
+        UnityWebRequest www = UnityWebRequest.Get("http://x.com");
+        yield return www.SendWebRequest();
+
+        if (www.isNetworkError || www.isHttpError)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            // Show results as text
+            Debug.Log(www.downloadHandler.text);
+        }
+    }
 
     //THIS STUFF FOR REWARDED AD
     public void HandleRewardedAdLoaded(object sender, EventArgs args)
@@ -165,12 +191,51 @@ public class GameController : MonoBehaviour
         // Create a 320x50 banner at the top of the screen.
         this.bannerView = new BannerView(bannerAdUnitId, AdSize.Banner, AdPosition.Bottom);
         // Create an empty ad request.
+
+        // Called when an ad request has successfully loaded.
+        this.bannerView.OnAdLoaded += this.HandleOnAdLoaded;
+        // Called when an ad request failed to load.
+        this.bannerView.OnAdFailedToLoad += this.HandleOnAdFailedToLoad;
+        // Called when an ad is clicked.
+        this.bannerView.OnAdOpening += this.HandleOnAdOpened;
+        // Called when the user returned from the app after an ad click.
+        this.bannerView.OnAdClosed += this.HandleOnAdClosed;
+        // Called when the ad click caused the user to leave the application.
+        this.bannerView.OnAdLeavingApplication += this.HandleOnAdLeavingApplication;
+
         AdRequest requestBannerAd = new AdRequest.Builder().Build();
         // Load the banner with the request.
         this.bannerView.LoadAd(requestBannerAd);
         // Hide th bannerView by default
         this.bannerView.Hide();
     }
+
+    public void HandleOnAdLoaded(object sender, EventArgs args)
+    {
+        Debug.Log("HandleAdLoaded event received");
+    }
+
+    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
+    {
+        Debug.Log("HandleFailedToReceiveAd event received with message: "
+                            + args.Message);
+    }
+
+    public void HandleOnAdOpened(object sender, EventArgs args)
+    {
+        Debug.Log("HandleAdOpened event received");
+    }
+
+    public void HandleOnAdClosed(object sender, EventArgs args)
+    {
+        Debug.Log("HandleAdClosed event received");
+    }
+
+    public void HandleOnAdLeavingApplication(object sender, EventArgs args)
+    {
+        Debug.Log("HandleAdLeavingApplication event received");
+    }
+
 
 
     void Update()
@@ -280,8 +345,11 @@ public class GameController : MonoBehaviour
 
     public void RestartGame()
     {
+        CheckAndSetHighscore();
+
         this.bannerView.Hide();
         this.bannerView.Destroy();
+
         SceneManager.LoadScene(1);
     }
 
@@ -309,6 +377,10 @@ public class GameController : MonoBehaviour
         if (this.rewardedAd.IsLoaded())
         {
             this.rewardedAd.Show();
+        }
+        else
+        {
+            noAdAvailable.SetActive(true);
         }
     }
 }
