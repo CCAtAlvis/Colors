@@ -27,6 +27,7 @@ public class GameController : MonoBehaviour
     public GameObject optionSprites;
 
     public GameObject deathCanvas;
+    public GameObject watchAdButton;
     public GameObject pauseCanvas;
     public GameObject noAdAvailable;
 
@@ -42,6 +43,7 @@ public class GameController : MonoBehaviour
     private RewardedAd rewardedAd;
     private bool rewardReceived = false;
     private bool rewardAdClosed = false;
+    private bool rewardAdWatched = false;
 
     void Awake()
     {
@@ -85,26 +87,26 @@ public class GameController : MonoBehaviour
 
 
         //Check if internet is working
-        StartCoroutine(CheckInternetConnection());
+        //StartCoroutine(CheckInternetConnection());
     }
 
 
     //CHECKING IF INTERNET IS WORKING
-    IEnumerator CheckInternetConnection()
-    {
-        UnityWebRequest www = UnityWebRequest.Get("http://x.com");
-        yield return www.SendWebRequest();
+    //IEnumerator CheckInternetConnection()
+    //{
+    //    UnityWebRequest www = UnityWebRequest.Get("http://x.com");
+    //    yield return www.SendWebRequest();
 
-        if (www.isNetworkError || www.isHttpError)
-        {
-            Debug.Log(www.error);
-        }
-        else
-        {
-            // Show results as text
-            Debug.Log(www.downloadHandler.text);
-        }
-    }
+    //    if (www.isNetworkError || www.isHttpError)
+    //    {
+    //        Debug.Log(www.error);
+    //    }
+    //    else
+    //    {
+    //        // Show results as text
+    //        Debug.Log(www.downloadHandler.text);
+    //    }
+    //}
 
     //THIS STUFF FOR REWARDED AD
     public void HandleRewardedAdLoaded(object sender, EventArgs args)
@@ -152,12 +154,14 @@ public class GameController : MonoBehaviour
     //its simple, check for the flags in the Update loop
     public void HandleRewardedAdClosed(object sender, EventArgs args)
     {
-        this.CreateAndLoadRewardedAd();
+        //this.CreateAndLoadRewardedAd();
 
         Debug.Log("HandleRewardedAdClosed");
         if (rewardReceived)
         {
             rewardAdClosed = true;
+            rewardAdWatched = true;
+            watchAdButton.SetActive(false);
         }
     }
 

@@ -7,7 +7,13 @@ public class SpriteController : MonoBehaviour
 
     private void OnMouseDown()
     {
+        //Play click sound
         AudioManager.Instance.PlayClickSound();
+
+        //Haptic feedback
+        //Handheld.Vibrate();
+        //Need to find something to get it worked
+
         //Debug.Log("i am pressed");
 
         if (amICorrectOption)
@@ -16,7 +22,7 @@ public class SpriteController : MonoBehaviour
         }
         else
         {
-            gameLogic.IncorrectOption();
+            gameLogic.CorrectOption();
         }
     }
 }
