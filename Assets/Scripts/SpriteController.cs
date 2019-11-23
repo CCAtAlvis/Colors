@@ -22,7 +22,7 @@ public class SpriteController : MonoBehaviour
         }
         else
         {
-            gameLogic.CorrectOption();
+            gameLogic.IncorrectOption();
         }
     }
 }
