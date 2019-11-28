@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,10 +21,11 @@ public class GameController : MonoBehaviour
     string rewardedAdUnitId = "unexpected_platform";
 #endif
 
-    public Text countdown;
+    public Text countdownText;
     public GameLogic gameLogic;
     public GameObject optionSprites;
 
+    public GameObject countdownCanvas;
     public GameObject deathCanvas;
     public GameObject watchAdButton;
     public GameObject pauseCanvas;
@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         //Debug.Log("starting");
-        countdown.text = "" + timeLeft;
+        countdownText.text = "" + timeLeft;
         StartCoroutine(CountdownTimer());
 
         // Initialize the Google Mobile Ads SDK.
@@ -81,7 +81,9 @@ public class GameController : MonoBehaviour
         this.rewardedAd.OnAdClosed += HandleRewardedAdClosed;
 
         // Create an empty ad request.
-        AdRequest requestRewardedAd = new AdRequest.Builder().Build();
+        AdRequest requestRewardedAd = new AdRequest.Builder()
+            .AddExtra("max_ad_content_rating", "PG")
+            .Build();
         // Load the rewarded ad with the request.
         this.rewardedAd.LoadAd(requestRewardedAd);
 
@@ -207,7 +209,9 @@ public class GameController : MonoBehaviour
         // Called when the ad click caused the user to leave the application.
         this.bannerView.OnAdLeavingApplication += this.HandleOnAdLeavingApplication;
 
-        AdRequest requestBannerAd = new AdRequest.Builder().Build();
+        AdRequest requestBannerAd = new AdRequest.Builder()
+            .AddExtra("max_ad_content_rating", "PG")
+            .Build();
         // Load the banner with the request.
         this.bannerView.LoadAd(requestBannerAd);
         // Hide th bannerView by default
@@ -248,7 +252,7 @@ public class GameController : MonoBehaviour
         {
             if (hasGameEnded)
             {
-                SceneManager.LoadScene(0);
+                QuitGame();
             }
             else
             {
@@ -260,7 +264,7 @@ public class GameController : MonoBehaviour
         {
             deathCanvas.SetActive(false);
             hasGameEnded = false;
-            countdown.gameObject.SetActive(true);
+            countdownText.gameObject.SetActive(true);
 
             timeLeft = 3;
             StartCoroutine(RestartGameAfterRewardedAd());
@@ -275,10 +279,10 @@ public class GameController : MonoBehaviour
         while (timeLeft >= 0)
         {
             //Debug.Log(timeLeft);
-            countdown.text = "" + timeLeft;
+            countdownText.text = "" + timeLeft;
             if (timeLeft == 0)
             {
-                countdown.text = "GO!";
+                countdownText.text = "GO!";
                 yield return new WaitForSeconds(0.5f);
             }
             else
@@ -289,7 +293,8 @@ public class GameController : MonoBehaviour
             timeLeft--;
         }
 
-        countdown.gameObject.SetActive(false);
+        //countdownText.gameObject.SetActive(false);
+        countdownCanvas.SetActive(false);
         //Debug.Log("end");
 
         gameLogic.enabled = true;
@@ -301,10 +306,10 @@ public class GameController : MonoBehaviour
         while (timeLeft >= 0)
         {
             //Debug.Log(timeLeft);
-            countdown.text = "" + timeLeft;
+            countdownText.text = "" + timeLeft;
             if (timeLeft == 0)
             {
-                countdown.text = "GO!";
+                countdownText.text = "GO!";
                 yield return new WaitForSeconds(0.5f);
             }
             else
@@ -315,7 +320,7 @@ public class GameController : MonoBehaviour
             timeLeft--;
         }
 
-        countdown.gameObject.SetActive(false);
+        countdownText.gameObject.SetActive(false);
         //Debug.Log("end");
 
         gameLogic.AddLife();
@@ -377,9 +382,9 @@ public class GameController : MonoBehaviour
         Debug.Log("user wants to watch ad!!");
         Debug.Log("is rewarded ad loaded: " + this.rewardedAd.IsLoaded());
 
-        this.bannerView.Hide();
         if (this.rewardedAd.IsLoaded())
         {
+            this.bannerView.Hide();
             this.rewardedAd.Show();
         }
         else
