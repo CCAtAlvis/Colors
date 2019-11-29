@@ -19,8 +19,10 @@ public class GameController : MonoBehaviour
     string rewardedAdUnitId = "unexpected_platform";
 #endif
 
+    [SerializeField()]
+    public ILevelController gameLogic;
+
     public Text countdownText;
-    public GameLogic gameLogic;
     public GameObject optionSprites;
 
     public GameObject countdownCanvas;
@@ -45,7 +47,9 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-        gameLogic.enabled = false;
+        gameLogic = gameObject.GetComponent<ILevelController>();
+        gameLogic.Enable(false);
+
         optionSprites.SetActive(false);
         deathCanvas.SetActive(false);
         pauseCanvas.SetActive(false);
@@ -278,7 +282,7 @@ public class GameController : MonoBehaviour
         countdownCanvas.SetActive(false);
         //Debug.Log("end");
 
-        gameLogic.enabled = true;
+        gameLogic.Restart();
         optionSprites.SetActive(true);
     }
 

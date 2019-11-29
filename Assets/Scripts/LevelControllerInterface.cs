@@ -1,10 +1,6 @@
-﻿using UnityEngine;
-
-public interface ILevelController
+﻿public interface ILevelController
 {
-    void CorrectOption();
-
-    void IncorrectOption();
+    void CorrectOption(bool status);
 
     void AddLife();
 
@@ -12,7 +8,7 @@ public interface ILevelController
 
     bool _enabled { get; set; }
 
-    void Enable();
+    void Enable(bool status);
 
-    void Disable();
+    void Restart();
 }

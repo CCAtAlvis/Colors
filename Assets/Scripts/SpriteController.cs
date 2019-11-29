@@ -2,8 +2,15 @@
 
 public class SpriteController : MonoBehaviour
 {
-    public GameLogic gameLogic;
+    public GameObject levelController;
     public bool amICorrectOption = false;
+
+    private ILevelController gameLogic;
+
+    void Awake()
+    {
+        gameLogic = levelController.GetComponent<ILevelController>();    
+    }
 
     private void OnMouseDown()
     {
@@ -18,11 +25,11 @@ public class SpriteController : MonoBehaviour
 
         if (amICorrectOption)
         {
-            gameLogic.CorrectOption();
+            gameLogic.CorrectOption(true);
         }
         else
         {
-            gameLogic.IncorrectOption();
+            gameLogic.CorrectOption(false);
         }
     }
 }

@@ -2,10 +2,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameLogic : MonoBehaviour, ILevelController
+public class GameLogic : MonoBehaviour
 {
     public RawImage flashImage;
-    public Text scoreText;
     public GameController gameController;
 
     public GameObject[] options;
@@ -50,9 +49,6 @@ public class GameLogic : MonoBehaviour, ILevelController
     private int score = 0;
 
     private int optionsToDisplay = 2;
-
-    [HideInInspector]
-    public bool _enabled { get; set; }
 
     void Start()
     {
@@ -222,8 +218,6 @@ public class GameLogic : MonoBehaviour, ILevelController
         {
             flashSpeedMultipler += 0.1f;
         }
-
-        scoreText.text = "" + score;
     }
 
     public void CorrectOption()
@@ -234,7 +228,7 @@ public class GameLogic : MonoBehaviour, ILevelController
 
     public void IncorrectOption()
     {
-        gameController.EndGame(score);
+        //gameController.EndGame(score);
     }
 
     public int GetScore()
@@ -245,14 +239,5 @@ public class GameLogic : MonoBehaviour, ILevelController
     public void AddLife()
     {
         FlashScreen();
-    }
-
-    public void Disable()
-    {
-    }
-
-    public void Enable()
-    {
-
     }
 }

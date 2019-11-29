@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b06cdd36f505cc45931868a2b15a739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLogic: {fileID: 901062573}
+  levelController: {fileID: 901062569}
   amICorrectOption: 0
 --- !u!61 &52530840
 BoxCollider2D:
@@ -764,7 +764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b06cdd36f505cc45931868a2b15a739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLogic: {fileID: 901062573}
+  levelController: {fileID: 901062569}
   amICorrectOption: 0
 --- !u!61 &283588664
 BoxCollider2D:
@@ -1190,7 +1190,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b06cdd36f505cc45931868a2b15a739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLogic: {fileID: 901062573}
+  levelController: {fileID: 901062569}
   amICorrectOption: 0
 --- !u!1 &711843002
 GameObject:
@@ -1664,6 +1664,7 @@ GameObject:
   m_Component:
   - component: {fileID: 901062570}
   - component: {fileID: 901062574}
+  - component: {fileID: 901062575}
   - component: {fileID: 901062573}
   - component: {fileID: 901062572}
   - component: {fileID: 901062571}
@@ -1804,13 +1805,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901062569}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4c3e5c95773fc2640a67999574a95e28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   flashImage: {fileID: 1649739693}
-  scoreText: {fileID: 1649063012}
   gameController: {fileID: 901062574}
   options:
   - {fileID: 1709079879}
@@ -1848,7 +1848,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdownText: {fileID: 1369651593}
-  gameLogic: {fileID: 901062573}
   optionSprites: {fileID: 1718199534}
   countdownCanvas: {fileID: 799800141}
   deathCanvas: {fileID: 1923014184}
@@ -1856,6 +1855,21 @@ MonoBehaviour:
   pauseCanvas: {fileID: 411776002}
   noAdAvailable: {fileID: 1134237753}
   timeLeft: 3
+--- !u!114 &901062575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 901062569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24661a1f28a398c4b9b37bff2c5c0913, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameController: {fileID: 901062574}
+  gameLogic: {fileID: 901062573}
+  scoreText: {fileID: 1649063012}
 --- !u!1 &982708116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,7 +1915,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b06cdd36f505cc45931868a2b15a739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLogic: {fileID: 901062573}
+  levelController: {fileID: 901062569}
   amICorrectOption: 0
 --- !u!61 &982708119
 BoxCollider2D:
@@ -2731,7 +2745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b06cdd36f505cc45931868a2b15a739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLogic: {fileID: 901062573}
+  levelController: {fileID: 901062569}
   amICorrectOption: 0
 --- !u!61 &1639076128
 BoxCollider2D:
@@ -3335,7 +3349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b06cdd36f505cc45931868a2b15a739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLogic: {fileID: 901062573}
+  levelController: {fileID: 901062569}
   amICorrectOption: 0
 --- !u!1 &1718199534
 GameObject:
@@ -3699,7 +3713,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b06cdd36f505cc45931868a2b15a739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameLogic: {fileID: 901062573}
+  levelController: {fileID: 901062569}
   amICorrectOption: 0
 --- !u!61 &2082635321
 BoxCollider2D:
