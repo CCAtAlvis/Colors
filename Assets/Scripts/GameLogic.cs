@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameLogic : MonoBehaviour
+public class GameLogic : MonoBehaviour, ILevelController
 {
     public RawImage flashImage;
     public Text scoreText;
@@ -50,6 +50,9 @@ public class GameLogic : MonoBehaviour
     private int score = 0;
 
     private int optionsToDisplay = 2;
+
+    [HideInInspector]
+    public bool _enabled { get; set; }
 
     void Start()
     {
@@ -242,5 +245,14 @@ public class GameLogic : MonoBehaviour
     public void AddLife()
     {
         FlashScreen();
+    }
+
+    public void Disable()
+    {
+    }
+
+    public void Enable()
+    {
+
     }
 }

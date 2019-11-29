@@ -7,8 +7,6 @@ using UnityEngine.SceneManagement;
 
 using GoogleMobileAds.Api;
 
-using UnityEngine.Networking;
-
 public class GameController : MonoBehaviour
 {
 #if UNITY_ANDROID
@@ -91,24 +89,6 @@ public class GameController : MonoBehaviour
         //Check if internet is working
         //StartCoroutine(CheckInternetConnection());
     }
-
-
-    //CHECKING IF INTERNET IS WORKING
-    //IEnumerator CheckInternetConnection()
-    //{
-    //    UnityWebRequest www = UnityWebRequest.Get("http://x.com");
-    //    yield return www.SendWebRequest();
-
-    //    if (www.isNetworkError || www.isHttpError)
-    //    {
-    //        Debug.Log(www.error);
-    //    }
-    //    else
-    //    {
-    //        // Show results as text
-    //        Debug.Log(www.downloadHandler.text);
-    //    }
-    //}
 
     //THIS STUFF FOR REWARDED AD
     public void HandleRewardedAdLoaded(object sender, EventArgs args)
@@ -264,6 +244,7 @@ public class GameController : MonoBehaviour
         {
             deathCanvas.SetActive(false);
             hasGameEnded = false;
+            countdownCanvas.SetActive(true);
             countdownText.gameObject.SetActive(true);
 
             timeLeft = 3;
