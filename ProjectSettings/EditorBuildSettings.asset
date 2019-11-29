@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/ClassicLevel.unity
     guid: 0eaeb3611c2071a47adcfecdc88efc67
+  - enabled: 1
+    path: Assets/Scenes/TimerLevel.unity
+    guid: bb4b9f943d555724093905ff2d16d62a
   m_configObjects: {}

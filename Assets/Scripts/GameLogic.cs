@@ -31,8 +31,7 @@ public class GameLogic : MonoBehaviour
                                             new Vector2(-1.75f,0), new Vector2(1.75f, 0),
                                             new Vector2(-1,-1.8f), new Vector2(1,-1.8f) };
 
-    [SerializeField]
-    private float flashSpeedMultipler = 1f;
+    public float flashSpeedMultipler = 1f;
 
     [SerializeField]
     private Color32[] colorsToFlash = { new Color32(255,0,0,255),
@@ -224,11 +223,6 @@ public class GameLogic : MonoBehaviour
     {
         ScoreHandler();
         FlashScreen();
-    }
-
-    public void IncorrectOption()
-    {
-        //gameController.EndGame(score);
     }
 
     public int GetScore()

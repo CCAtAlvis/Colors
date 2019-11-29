@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ClassicLevel : MonoBehaviour, ILevelController
+public class TimerLevel : MonoBehaviour, ILevelController
 {
     public GameController gameController;
     public GameLogic gameLogic;
@@ -11,18 +11,32 @@ public class ClassicLevel : MonoBehaviour, ILevelController
     [HideInInspector]
     public bool _enabled { get; set; }
 
+    private float timer = 60f;
+
     void Start()
     {
         if (!_enabled)
             return;
 
         gameLogic.enabled = true;
+        gameLogic.flashSpeedMultipler = 2f;
     }
 
     void Update()
     {
         if (!_enabled)
             return;
+
+        if (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+            scoreText.text = "" + timer.ToString("F2");
+
+        }
+        else
+        {
+            EndGame();
+        }
     }
 
     private void EndGame()
@@ -62,7 +76,6 @@ public class ClassicLevel : MonoBehaviour, ILevelController
         {
             //Correct option => play on
             gameLogic.CorrectOption();
-            scoreText.text = "" + GetScore();
         }
         else
         {
@@ -74,11 +87,12 @@ public class ClassicLevel : MonoBehaviour, ILevelController
     public void CheckAndSetHighscore()
     {
         int currentScore = GetScore();
-        int prevHighScore = PlayerPrefs.GetInt("high-score-clicks");
+        int prevHighScore = PlayerPrefs.GetInt("high-score-timer");
 
         if (currentScore > prevHighScore)
         {
-            PlayerPrefs.SetInt("high-score-clicks", currentScore);
+            PlayerPrefs.SetInt("high-score-timer", currentScore);
+            PlayerPrefs.SetFloat("high-score-timer-time", 60 - timer);
             //display some high score thingy
             PlayerPrefs.Save();
         }

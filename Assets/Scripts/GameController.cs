@@ -20,7 +20,7 @@ public class GameController : MonoBehaviour
 #endif
 
     [SerializeField()]
-    public ILevelController gameLogic;
+    public ILevelController levelController;
 
     public Text countdownText;
     public GameObject optionSprites;
@@ -47,8 +47,8 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-        gameLogic = gameObject.GetComponent<ILevelController>();
-        gameLogic.Enable(false);
+        levelController = gameObject.GetComponent<ILevelController>();
+        levelController.Enable(false);
 
         optionSprites.SetActive(false);
         deathCanvas.SetActive(false);
@@ -282,7 +282,7 @@ public class GameController : MonoBehaviour
         countdownCanvas.SetActive(false);
         //Debug.Log("end");
 
-        gameLogic.Restart();
+        levelController.Restart();
         optionSprites.SetActive(true);
     }
 
@@ -308,28 +308,15 @@ public class GameController : MonoBehaviour
         countdownText.gameObject.SetActive(false);
         //Debug.Log("end");
 
-        gameLogic.AddLife();
+        levelController.AddLife();
         optionSprites.SetActive(true);
-    }
-
-    private void CheckAndSetHighscore()
-    {
-        int currentScore = gameLogic.GetScore();
-        int prevHighScore = PlayerPrefs.GetInt("high-score-clicks");
-
-        if (currentScore > prevHighScore)
-        {
-            PlayerPrefs.SetInt("high-score-clicks", currentScore);
-            //display some high score thingy
-            PlayerPrefs.Save();
-        }
     }
 
     public void EndGame(int currentScore)
     {
         optionSprites.SetActive(false);
 
-        CheckAndSetHighscore();
+        levelController.CheckAndSetHighscore();
 
         deathCanvas.SetActive(true);
         hasGameEnded = true;
@@ -339,12 +326,12 @@ public class GameController : MonoBehaviour
 
     public void RestartGame()
     {
-        CheckAndSetHighscore();
+        levelController.CheckAndSetHighscore();
 
         this.bannerView.Hide();
         this.bannerView.Destroy();
 
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void ResumeGame()
@@ -356,7 +343,7 @@ public class GameController : MonoBehaviour
     {
         this.bannerView.Hide();
         this.bannerView.Destroy();
-        CheckAndSetHighscore();
+        levelController.CheckAndSetHighscore();
         SceneManager.LoadScene(0);
     }
 

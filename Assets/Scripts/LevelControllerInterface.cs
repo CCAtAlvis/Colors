@@ -11,4 +11,6 @@
     void Enable(bool status);
 
     void Restart();
+
+    void CheckAndSetHighscore();
 }
