@@ -305,7 +305,8 @@ public class GameController : MonoBehaviour
             timeLeft--;
         }
 
-        countdownText.gameObject.SetActive(false);
+        //countdownText.gameObject.SetActive(false);
+        countdownCanvas.SetActive(false);
         //Debug.Log("end");
 
         levelController.AddLife();
