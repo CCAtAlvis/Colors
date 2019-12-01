@@ -6,13 +6,13 @@ public class MenuController : MonoBehaviour
 {
     public GameObject rightArrow;
     public GameObject leftArrow;
-    public GameObject settingCanvas;
 
     public Text classicHighScoreText;
     public Text timerHighScoreText;
     public Text timerModeName;
 
     public Animator menuAnimator;
+    public Animator settingsAnimator;
 
     private int menuIndex = 0;
     private int sceneToLoad = 1;
@@ -20,6 +20,8 @@ public class MenuController : MonoBehaviour
     private const int highScoreForTimer = 100;
 
     private int playSound = 1;
+
+    private bool isSettingsOpen = false;
 
     void Start()
     {
@@ -52,7 +54,8 @@ public class MenuController : MonoBehaviour
             if (timerHighScore != 0)
             {
                 timerHighScoreText.text = "" + timerHighScore;
-            } else
+            }
+            else
             {
                 timerHighScoreText.text = "";
             }
@@ -68,7 +71,6 @@ public class MenuController : MonoBehaviour
             PlayerPrefs.SetInt("play-sounc", 1);
         }
 
-        settingCanvas.SetActive(false);
         leftArrow.SetActive(false);
     }
 
@@ -76,8 +78,15 @@ public class MenuController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Escape))
         {
-            Debug.Log("exiting game");
-            Application.Quit();
+            if (isSettingsOpen)
+            {
+                HideSettings();
+            }
+            else
+            {
+                Debug.Log("exiting game");
+                Application.Quit();
+            }
         }
     }
 
@@ -93,7 +102,7 @@ public class MenuController : MonoBehaviour
     public void ArrowButtonClick(int change)
     {
         menuIndex += change;
-        Debug.Log(menuIndex);
+        //Debug.Log(menuIndex);
 
         switch (menuIndex)
         {
@@ -138,11 +147,14 @@ public class MenuController : MonoBehaviour
 
     public void ShowSettings()
     {
-        settingCanvas.SetActive(true);
+        settingsAnimator.SetTrigger("showSettings");
+        settingsAnimator.ResetTrigger("hideSettings");
+        isSettingsOpen = true;
     }
 
     public void HideSettings()
     {
-        settingCanvas.SetActive(false);
+        settingsAnimator.SetTrigger("hideSettings");
+        settingsAnimator.ResetTrigger("showSettings");
     }
 }
