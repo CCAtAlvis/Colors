@@ -91,7 +91,7 @@ public class MenuController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.Escape))
+        if (Input.GetKeyUp(KeyCode.Escape))
         {
             if (isSettingsOpen)
             {
@@ -178,5 +178,6 @@ public class MenuController : MonoBehaviour
     {
         settingsAnimator.SetTrigger("hideSettings");
         settingsAnimator.ResetTrigger("showSettings");
+        isSettingsOpen = false;
     }
 }
