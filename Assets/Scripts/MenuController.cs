@@ -6,6 +6,7 @@ public class MenuController : MonoBehaviour
 {
     public GameObject rightArrow;
     public GameObject leftArrow;
+    public GameObject settingCanvas;
 
     public Text classicHighScoreText;
     public Text timerHighScoreText;
@@ -15,6 +16,10 @@ public class MenuController : MonoBehaviour
 
     private int menuIndex = 0;
     private int sceneToLoad = 1;
+
+    private const int highScoreForTimer = 100;
+
+    private int playSound = 1;
 
     void Start()
     {
@@ -41,9 +46,16 @@ public class MenuController : MonoBehaviour
         }
 
         int timerHighScore = PlayerPrefs.GetInt("high-score-timer");
-        if (timerHighScore != 0)
+        if (clasicHighScore >= highScoreForTimer)
         {
-            timerHighScoreText.text = "" + timerHighScore;
+            timerModeName.text = "timer mode";
+            if (timerHighScore != 0)
+            {
+                timerHighScoreText.text = "" + timerHighScore;
+            } else
+            {
+                timerHighScoreText.text = "";
+            }
         }
         else
         {
@@ -51,6 +63,12 @@ public class MenuController : MonoBehaviour
         }
 
 
+        if (!PlayerPrefs.HasKey("play-sound"))
+        {
+            PlayerPrefs.SetInt("play-sounc", 1);
+        }
+
+        settingCanvas.SetActive(false);
         leftArrow.SetActive(false);
     }
 
@@ -91,10 +109,9 @@ public class MenuController : MonoBehaviour
                 leftArrow.SetActive(true);
                 rightArrow.SetActive(true);
 
-                if (PlayerPrefs.HasKey("asd"))
+                if (PlayerPrefs.GetInt("high-score-clicks", 0) >= highScoreForTimer)
                 {
                     sceneToLoad = 2;
-                    timerModeName.text = "timer mode";
                 }
                 menuAnimator.SetInteger("GameState", menuIndex);
                 break;
@@ -109,5 +126,23 @@ public class MenuController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void SoundToggle()
+    {
+        playSound += 1;
+        playSound %= 2;
+        //Debug.Log(playSound);
+        PlayerPrefs.SetInt("play-sound", playSound);
+    }
+
+    public void ShowSettings()
+    {
+        settingCanvas.SetActive(true);
+    }
+
+    public void HideSettings()
+    {
+        settingCanvas.SetActive(false);
     }
 }

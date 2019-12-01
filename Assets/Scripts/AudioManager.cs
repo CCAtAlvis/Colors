@@ -6,8 +6,9 @@ public class AudioManager : MonoBehaviour
 
     public static AudioManager Instance { get { return instance; } }
 
-    [SerializeField]
-    private AudioSource click;
+    public AudioSource click;
+
+    private bool playSound;
 
     void Awake()
     {
@@ -19,10 +20,15 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
         }
+
+        playSound = PlayerPrefs.GetInt("play-sound", 1) == 1;
     }
 
     public void PlayClickSound()
     {
-        click.Play();
+        if (playSound)
+        {
+            click.Play();
+        }
     }
 }
