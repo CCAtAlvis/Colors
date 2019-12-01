@@ -39,6 +39,7 @@ public class ClassicLevel : MonoBehaviour, ILevelController
 
     public void AddLife()
     {
+        Enable(true);
         gameLogic.AddLife();
     }
 

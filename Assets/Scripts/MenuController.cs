@@ -117,7 +117,7 @@ public class MenuController : MonoBehaviour
     public void ArrowButtonClick(int change)
     {
         menuIndex += change;
-        //Debug.Log(menuIndex);
+        Debug.Log(menuIndex);
 
         switch (menuIndex)
         {

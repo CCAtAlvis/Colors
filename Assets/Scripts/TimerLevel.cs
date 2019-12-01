@@ -53,6 +53,7 @@ public class TimerLevel : MonoBehaviour, ILevelController
 
     public void AddLife()
     {
+        Enable(true);
         gameLogic.AddLife();
     }
 
