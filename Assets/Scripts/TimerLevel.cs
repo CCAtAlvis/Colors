@@ -11,7 +11,7 @@ public class TimerLevel : MonoBehaviour, ILevelController
     [HideInInspector]
     public bool _enabled { get; set; }
 
-    private float timer = 60f;
+    private float timer = 30f;
 
     void Start()
     {
