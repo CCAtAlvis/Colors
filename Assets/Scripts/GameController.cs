@@ -140,7 +140,7 @@ public class GameController : MonoBehaviour
     //its simple, check for the flags in the Update loop
     public void HandleRewardedAdClosed(object sender, EventArgs args)
     {
-        //this.CreateAndLoadRewardedAd();
+        this.CreateAndLoadRewardedAd();
 
         Debug.Log("HandleRewardedAdClosed");
         if (rewardReceived)
