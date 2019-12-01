@@ -11,6 +11,9 @@ public class MenuController : MonoBehaviour
     public Text timerHighScoreText;
     public Text timerModeName;
 
+    public Text playSoundText;
+    public Toggle playSoundToggle;
+
     public Animator menuAnimator;
     public Animator settingsAnimator;
 
@@ -69,6 +72,18 @@ public class MenuController : MonoBehaviour
         if (!PlayerPrefs.HasKey("play-sound"))
         {
             PlayerPrefs.SetInt("play-sounc", 1);
+            playSoundText.text = "   Sound: On";
+            playSoundToggle.isOn = true;
+        }
+        else if (PlayerPrefs.GetInt("play-sound") == 1)
+        {
+            playSoundText.text = "   Sound: On";
+            playSoundToggle.isOn = true;
+        }
+        else
+        {
+            playSoundText.text = "   Sound: Off";
+            playSoundToggle.isOn = false;
         }
 
         leftArrow.SetActive(false);
@@ -143,6 +158,13 @@ public class MenuController : MonoBehaviour
         playSound %= 2;
         //Debug.Log(playSound);
         PlayerPrefs.SetInt("play-sound", playSound);
+        if (playSound==1)
+        {
+            playSoundText.text = "   Sound: On";
+        } else
+        {
+            playSoundText.text = "   Sound: Off";
+        }
     }
 
     public void ShowSettings()
