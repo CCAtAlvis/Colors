@@ -14,6 +14,9 @@ public class MenuController : MonoBehaviour
     public Text playSoundText;
     public Toggle playSoundToggle;
 
+    public Text showFPSText;
+    public Toggle showFPSToggle;
+
     public Animator menuAnimator;
     public Animator settingsAnimator;
 
@@ -23,6 +26,7 @@ public class MenuController : MonoBehaviour
     private const int highScoreForTimer = 100;
 
     private int playSound = 1;
+    private int showFPS = 0;
 
     private bool isSettingsOpen = false;
 
@@ -86,6 +90,23 @@ public class MenuController : MonoBehaviour
             playSoundToggle.isOn = false;
         }
 
+        if (!PlayerPrefs.HasKey("show-fps"))
+        {
+            PlayerPrefs.SetInt("show-fps", 0);
+            showFPSText.text = "    FPS: Off";
+            showFPSToggle.isOn = false;
+        }
+        else if (PlayerPrefs.GetInt("show-fps") == 1)
+        {
+            showFPSText.text = "    FPS: On";
+            showFPSToggle.isOn = true;
+        }
+        else
+        {
+            showFPSText.text = "    FPS: Off";
+            showFPSToggle.isOn = false;
+        }
+
         leftArrow.SetActive(false);
     }
 
@@ -117,7 +138,7 @@ public class MenuController : MonoBehaviour
     public void ArrowButtonClick(int change)
     {
         menuIndex += change;
-        Debug.Log(menuIndex);
+        //Debug.Log(menuIndex);
 
         switch (menuIndex)
         {
@@ -157,13 +178,32 @@ public class MenuController : MonoBehaviour
         playSound += 1;
         playSound %= 2;
         //Debug.Log(playSound);
+
         PlayerPrefs.SetInt("play-sound", playSound);
-        if (playSound==1)
+        if (playSound == 1)
         {
             playSoundText.text = "   Sound: On";
-        } else
+        }
+        else
         {
             playSoundText.text = "   Sound: Off";
+        }
+    }
+
+    public void FPSToggle()
+    {
+        showFPS += 1;
+        showFPS %= 2;
+        //Debug.Log(showFPS);
+
+        PlayerPrefs.SetInt("show-fps", showFPS);
+        if (showFPS == 1)
+        {
+            showFPSText.text = "    FPS: On";
+        }
+        else
+        {
+            showFPSText.text = "    FPS: Off";
         }
     }
 

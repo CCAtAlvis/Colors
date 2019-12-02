@@ -30,8 +30,13 @@ public class DebugScript : MonoBehaviour
 
     void Update()
     {
-        float fps = 1 / Time.deltaTime;
-        fpsText.text = "" + fps.ToString("F2"); ;
+        if (PlayerPrefs.GetInt("show-fps", 0) == 0)
+        {
+            fpsText.text = "";
+            return;
+        }
 
+        float fps = 1 / Time.deltaTime;
+        fpsText.text = "" + fps.ToString("F2");
     }
 }
