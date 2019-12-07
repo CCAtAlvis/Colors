@@ -4,6 +4,7 @@ public class SpriteController : MonoBehaviour
 {
     public GameObject levelController;
     public bool amICorrectOption = false;
+    public int soundToPlay = 0;
 
     private ILevelController gameLogic;
 
@@ -15,7 +16,7 @@ public class SpriteController : MonoBehaviour
     private void OnMouseDown()
     {
         //Play click sound
-        AudioManager.Instance.PlayClickSound();
+        AudioManager.Instance.PlayClickSound(soundToPlay);
 
         //Haptic feedback
         //Handheld.Vibrate();
@@ -29,8 +30,8 @@ public class SpriteController : MonoBehaviour
         }
         else
         {
-            //gameLogic.CorrectOption(true);
-            gameLogic.CorrectOption(false);
+            gameLogic.CorrectOption(true);
+            //gameLogic.CorrectOption(false);
         }
     }
 }

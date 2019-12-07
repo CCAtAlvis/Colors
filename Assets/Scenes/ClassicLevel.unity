@@ -159,6 +159,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelController: {fileID: 901062569}
   amICorrectOption: 0
+  soundToPlay: 0
 --- !u!61 &52530840
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -766,6 +767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelController: {fileID: 901062569}
   amICorrectOption: 0
+  soundToPlay: 0
 --- !u!61 &283588664
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1192,6 +1194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelController: {fileID: 901062569}
   amICorrectOption: 0
+  soundToPlay: 0
 --- !u!1 &711843002
 GameObject:
   m_ObjectHideFlags: 0
@@ -1666,8 +1669,8 @@ GameObject:
   - component: {fileID: 901062574}
   - component: {fileID: 901062575}
   - component: {fileID: 901062573}
-  - component: {fileID: 901062572}
   - component: {fileID: 901062571}
+  - component: {fileID: 901062572}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged
@@ -1797,7 +1800,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a06657a3b7edc5e42a3e69efd528c664, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  click: {fileID: 901062571}
+  audioSource: {fileID: 901062571}
+  frequencies:
+  - 240
+  - 270
+  - 300
+  - 320
+  - 360
+  - 400
+  - 450
+  audioClips:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  sampleFreq: 44000
 --- !u!114 &901062573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1811,7 +1831,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flashImage: {fileID: 1649739693}
-  gameController: {fileID: 901062574}
   options:
   - {fileID: 1709079879}
   - {fileID: 690742305}
@@ -1828,7 +1847,7 @@ MonoBehaviour:
   - serializedVersion: 2
     rgba: 4294901760
   - serializedVersion: 2
-    rgba: 4294967142
+    rgba: 4294967040
   - serializedVersion: 2
     rgba: 4294902015
   - serializedVersion: 2
@@ -1917,6 +1936,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelController: {fileID: 901062569}
   amICorrectOption: 0
+  soundToPlay: 0
 --- !u!61 &982708119
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2747,6 +2767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelController: {fileID: 901062569}
   amICorrectOption: 0
+  soundToPlay: 0
 --- !u!61 &1639076128
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -3351,6 +3372,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelController: {fileID: 901062569}
   amICorrectOption: 0
+  soundToPlay: 0
 --- !u!1 &1718199534
 GameObject:
   m_ObjectHideFlags: 0
@@ -3715,6 +3737,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelController: {fileID: 901062569}
   amICorrectOption: 0
+  soundToPlay: 0
 --- !u!61 &2082635321
 BoxCollider2D:
   m_ObjectHideFlags: 0

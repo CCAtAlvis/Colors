@@ -5,8 +5,7 @@ using UnityEngine.UI;
 public class GameLogic : MonoBehaviour
 {
     public RawImage flashImage;
-    public GameController gameController;
-
+ 
     public GameObject[] options;
 
     private List<SpriteRenderer> sprites = new List<SpriteRenderer>();
@@ -160,6 +159,7 @@ public class GameLogic : MonoBehaviour
             options[i].transform.position = spritePositions[positionIndexes[i]];
             sprites[i].color = colorsToFlash[indexes[i]];
             spriteControllers[i].amICorrectOption = false;
+            spriteControllers[i].soundToPlay = indexes[i];
 
             if (i == 0)
             {
