@@ -72,11 +72,11 @@ public class GameController : MonoBehaviour
         this.rewardedAd = new RewardedAd(rewardedAdUnitId);
 
         // Called when an ad request has successfully loaded.
-        this.rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
+        // this.rewardedAd.OnAdLoaded += HandleRewardedAdLoaded;
         // Called when an ad request failed to load.
         this.rewardedAd.OnAdFailedToLoad += HandleRewardedAdFailedToLoad;
         // Called when an ad is shown.
-        this.rewardedAd.OnAdOpening += HandleRewardedAdOpening;
+        // this.rewardedAd.OnAdOpening += HandleRewardedAdOpening;
         // Called when the user should be rewarded for interacting with the ad.
         this.rewardedAd.OnUserEarnedReward += HandleUserEarnedReward;
         // Called when the ad is closed.
@@ -95,10 +95,10 @@ public class GameController : MonoBehaviour
     }
 
     //THIS STUFF FOR REWARDED AD
-    public void HandleRewardedAdLoaded(object sender, EventArgs args)
-    {
-        Debug.Log("HandleRewardedAdLoaded event received");
-    }
+    //public void HandleRewardedAdLoaded(object sender, EventArgs args)
+    //{
+    //    Debug.Log("HandleRewardedAdLoaded event received");
+    //}
 
     public void HandleRewardedAdFailedToLoad(object sender, AdErrorEventArgs args)
     {
@@ -107,10 +107,10 @@ public class GameController : MonoBehaviour
                              + args.Message);
     }
 
-    public void HandleRewardedAdOpening(object sender, EventArgs args)
-    {
-        Debug.Log("HandleRewardedAdOpening event received");
-    }
+    //public void HandleRewardedAdOpening(object sender, EventArgs args)
+    //{
+    //    Debug.Log("HandleRewardedAdOpening event received");
+    //}
 
     public void HandleRewardedAdFailedToShow(object sender, AdErrorEventArgs args)
     {
@@ -183,15 +183,15 @@ public class GameController : MonoBehaviour
         // Create an empty ad request.
 
         // Called when an ad request has successfully loaded.
-        this.bannerView.OnAdLoaded += this.HandleOnAdLoaded;
+        // this.bannerView.OnAdLoaded += this.HandleOnAdLoaded;
         // Called when an ad request failed to load.
         this.bannerView.OnAdFailedToLoad += this.HandleOnAdFailedToLoad;
         // Called when an ad is clicked.
-        this.bannerView.OnAdOpening += this.HandleOnAdOpened;
+        // this.bannerView.OnAdOpening += this.HandleOnAdOpened;
         // Called when the user returned from the app after an ad click.
-        this.bannerView.OnAdClosed += this.HandleOnAdClosed;
+        // this.bannerView.OnAdClosed += this.HandleOnAdClosed;
         // Called when the ad click caused the user to leave the application.
-        this.bannerView.OnAdLeavingApplication += this.HandleOnAdLeavingApplication;
+        // this.bannerView.OnAdLeavingApplication += this.HandleOnAdLeavingApplication;
 
         AdRequest requestBannerAd = new AdRequest.Builder()
             .AddExtra("max_ad_content_rating", "PG")
@@ -199,13 +199,14 @@ public class GameController : MonoBehaviour
         // Load the banner with the request.
         this.bannerView.LoadAd(requestBannerAd);
         // Hide th bannerView by default
-        this.bannerView.Hide();
+        //this.bannerView.Hide();
+        // Not anymore
     }
 
-    public void HandleOnAdLoaded(object sender, EventArgs args)
-    {
-        Debug.Log("HandleAdLoaded event received");
-    }
+    //public void HandleOnAdLoaded(object sender, EventArgs args)
+    //{
+    //    Debug.Log("HandleAdLoaded event received");
+    //}
 
     public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
     {
@@ -213,20 +214,20 @@ public class GameController : MonoBehaviour
                             + args.Message);
     }
 
-    public void HandleOnAdOpened(object sender, EventArgs args)
-    {
-        Debug.Log("HandleAdOpened event received");
-    }
+    //public void HandleOnAdOpened(object sender, EventArgs args)
+    //{
+    //    Debug.Log("HandleAdOpened event received");
+    //}
 
-    public void HandleOnAdClosed(object sender, EventArgs args)
-    {
-        Debug.Log("HandleAdClosed event received");
-    }
+    //public void HandleOnAdClosed(object sender, EventArgs args)
+    //{
+    //    Debug.Log("HandleAdClosed event received");
+    //}
 
-    public void HandleOnAdLeavingApplication(object sender, EventArgs args)
-    {
-        Debug.Log("HandleAdLeavingApplication event received");
-    }
+    //public void HandleOnAdLeavingApplication(object sender, EventArgs args)
+    //{
+    //    Debug.Log("HandleAdLeavingApplication event received");
+    //}
 
 
 
@@ -261,6 +262,8 @@ public class GameController : MonoBehaviour
 
     IEnumerator CountdownTimer()
     {
+        this.bannerView.Hide();
+
         while (timeLeft >= 0)
         {
             //Debug.Log(timeLeft);
@@ -284,10 +287,14 @@ public class GameController : MonoBehaviour
 
         levelController.Restart();
         optionSprites.SetActive(true);
+
+        this.bannerView.Show();
     }
 
     IEnumerator RestartGameAfterRewardedAd()
     {
+        this.bannerView.Hide();
+
         while (timeLeft >= 0)
         {
             //Debug.Log(timeLeft);
@@ -311,6 +318,8 @@ public class GameController : MonoBehaviour
 
         levelController.AddLife();
         optionSprites.SetActive(true);
+
+        this.bannerView.Show();
     }
 
     public void EndGame(int currentScore)
@@ -357,7 +366,7 @@ public class GameController : MonoBehaviour
 
         if (this.rewardedAd.IsLoaded())
         {
-            this.bannerView.Hide();
+            //this.bannerView.Hide();
             this.rewardedAd.Show();
         }
         else
