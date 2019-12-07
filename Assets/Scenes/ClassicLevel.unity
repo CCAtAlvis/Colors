@@ -1669,8 +1669,8 @@ GameObject:
   - component: {fileID: 901062574}
   - component: {fileID: 901062575}
   - component: {fileID: 901062573}
-  - component: {fileID: 901062571}
   - component: {fileID: 901062572}
+  - component: {fileID: 901062571}
   m_Layer: 0
   m_Name: LevelController
   m_TagString: Untagged

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class GameLogic : MonoBehaviour
 {
     public RawImage flashImage;
- 
+
     public GameObject[] options;
 
     private List<SpriteRenderer> sprites = new List<SpriteRenderer>();
@@ -13,22 +13,22 @@ public class GameLogic : MonoBehaviour
 
     private List<Vector2> spritePositions = new List<Vector2>();
 
-    private Vector2[] optionsPosition2 = { new Vector2(-1, 0), new Vector2(1, 0) };
+    private List<Vector2> optionsPosition2 = new List<Vector2> { new Vector2(-1, 0), new Vector2(1, 0) };
 
-    private Vector2[] optionsPosition3 = {  new Vector2(-1,0.865f),
-                                            new Vector2(1,0.865f),
-                                            new Vector2(0, -1) };
+    private List<Vector2> optionsPosition3 = new List<Vector2> {  new Vector2(-1,0.865f),
+                                             new Vector2(1,0.865f),
+                                             new Vector2(0, -1) };
 
-    private Vector2[] optionsPosition4 = { new Vector2(-1,1), new Vector2(1,1),
-                                           new Vector2(-1,-1), new Vector2(1,-1) };
+    private List<Vector2> optionsPosition4 = new List<Vector2> { new Vector2(-1,1), new Vector2(1,1),
+                                             new Vector2(-1,-1), new Vector2(1,-1) };
 
-    private Vector2[] optionsPosition5 = {  new Vector2(0,2),
-                                            new Vector2(-1.75f,0), new Vector2(-1,-2),
-                                            new Vector2(1,-2), new Vector2(1.75f,0) };
+    private List<Vector2> optionsPosition5 = new List<Vector2> {  new Vector2(0,2),
+                                             new Vector2(-1.75f,0), new Vector2(-1,-2),
+                                             new Vector2(1,-2), new Vector2(1.75f,0) };
 
-    private Vector2[] optionsPosition6 = {  new Vector2(-1,1.8f), new Vector2(1,1.8f),
-                                            new Vector2(-1.75f,0), new Vector2(1.75f, 0),
-                                            new Vector2(-1,-1.8f), new Vector2(1,-1.8f) };
+    private List<Vector2> optionsPosition6 = new List<Vector2>{  new Vector2(-1,1.8f), new Vector2(1,1.8f),
+                                             new Vector2(-1.75f,0), new Vector2(1.75f, 0),
+                                             new Vector2(-1,-1.8f), new Vector2(1,-1.8f) };
 
     public float flashSpeedMultipler = 1f;
 
@@ -99,15 +99,20 @@ public class GameLogic : MonoBehaviour
         return ShuffleArray(indexes);
     }
 
-    int[] GetRandomTransform()
+    int[] GetRandomTransform(int displayOptions = 0)
     {
+        if (displayOptions == 0)
+        {
+            displayOptions = optionsToDisplay;
+        }
+
         int[] transforms2 = new int[] { 0, 1 };
         int[] transforms3 = new int[] { 0, 1, 2 };
         int[] transforms4 = new int[] { 0, 1, 2, 3 };
         int[] transforms5 = new int[] { 0, 1, 2, 3, 4 };
         int[] transforms6 = new int[] { 0, 1, 2, 3, 4, 5 };
 
-        switch (optionsToDisplay)
+        switch (displayOptions)
         {
             case 2:
                 return ShuffleArray(transforms2);
@@ -152,6 +157,11 @@ public class GameLogic : MonoBehaviour
     void SetOptions(int[] indexes)
     {
         int[] positionIndexes = GetRandomTransform();
+
+        for (int i = 0; i < options.Length; i++)
+        {
+            options[i].transform.position = new Vector3(100, 100);
+        }
 
         for (int i = 0; i < optionsToDisplay; ++i)
         {
@@ -212,8 +222,28 @@ public class GameLogic : MonoBehaviour
 
             optionsToDisplay++;
         }
+        else if (score >= 150)
+        {
+            optionsToDisplay = Random.Range(4, 7);
 
-        if (score%10==0 && flashSpeedMultipler < 15f)
+            spritePositions.Clear();
+            switch (optionsToDisplay)
+            {
+                case 4:
+                    spritePositions = optionsPosition4;
+                    break;
+
+                case 5:
+                    spritePositions = optionsPosition5;
+                    break;
+
+                case 6:
+                    spritePositions = optionsPosition6;
+                    break;
+            }
+        }
+
+        if (score % 10 == 0 && flashSpeedMultipler < 15f)
         {
             flashSpeedMultipler += 0.1f;
         }
