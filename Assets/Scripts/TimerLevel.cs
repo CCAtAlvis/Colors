@@ -5,6 +5,8 @@ public class TimerLevel : MonoBehaviour, ILevelController
 {
     public GameController gameController;
     public GameLogic gameLogic;
+    public Text endGameText;
+    public Button getLife;
 
     public Text scoreText;
 
@@ -31,7 +33,6 @@ public class TimerLevel : MonoBehaviour, ILevelController
         {
             timer -= Time.deltaTime;
             scoreText.text = "" + timer.ToString("F2");
-
         }
         else
         {
@@ -44,6 +45,13 @@ public class TimerLevel : MonoBehaviour, ILevelController
         Enable(false);
         CheckAndSetHighscore();
         gameController.EndGame(GetScore());
+        scoreText.text = "Score: " + GetScore();
+
+        if (timer <= 0f)
+        {
+            endGameText.text = "Time Over";
+            getLife.gameObject.SetActive(false);
+        }
     }
 
     public int GetScore()
